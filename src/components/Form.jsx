@@ -1,7 +1,21 @@
-import Intro from "@/components/Intro";
 import { TbFlareFilled } from "react-icons/tb";
+import Intro from "@/components/Intro";
+import { useState } from "react";
 
 function Form() {
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    message: "",
+  });
+  const [selectedServices, setSelectedServices] = useState([]);
+  const handleCheckbox = (value, checked) => {
+    setSelectedServices((prevState) => {
+      return checked
+        ? [...prevState, value]
+        : prevState.filter((state) => state !== value);
+    });
+  };
   const services = [
     "Website Design",
     "Content",
@@ -11,10 +25,27 @@ function Form() {
     "Other",
   ];
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({
+      ...formData,
+      services: selectedServices,
+    });
+  };
+
+  // const handleChange = (value, property) => {
+  //   setFormData({ ...formData, [property]: value });
+  // };
+  const handleChange = (value) => {
+    formData((prevState) => {
+      return [...prevState, value];
+    });
+  };
+
   return (
     <>
       <Intro />
-      <form className="flex flex-col gap-1">
+      <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
         {/* Input */}
         <input
           type="text"
@@ -23,6 +54,8 @@ function Form() {
           placeholder="Your name"
           className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
           required
+          value={formData.fullname}
+          onChange={(e) => handleChange(e.target.value, "fullname")}
         />
         <input
           type="email"
@@ -31,6 +64,8 @@ function Form() {
           placeholder="your@company.com"
           className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
           required
+          value={formData.email}
+          onChange={(e) => handleChange(e.target.value, "email")}
         />
         <input
           type="text"
@@ -39,16 +74,26 @@ function Form() {
           placeholder="Tell us a bit about your project..."
           className="h-24 border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
           required
+          value={formData.message}
+          onChange={(e) => handleChange(e.target.value, "message")}
         />
 
         <p className="my-5 text-zinc-800">How can we help?</p>
 
         {/* Checkbox */}
-        <section className="grid grid-cols-2 gap-1 md:max-w-96 mb-12">
+        <section className="mb-12 grid grid-cols-2 gap-1 md:max-w-96">
           {services.map((service, idx) => {
             return (
-              <label key={service + idx} className="flex items-center gap-1">
-                <input type="checkbox" name={service} className="size-6 border shadow-black checked:accent-lime-400" />
+              <label
+                key={service + idx}
+                className="flex cursor-pointer items-center gap-1"
+              >
+                <input
+                  type="checkbox"
+                  name={service}
+                  className="size-6"
+                  onChange={(e) => handleCheckbox(service, e.target.checked)}
+                />
                 {service}
               </label>
             );
@@ -56,9 +101,10 @@ function Form() {
         </section>
         <button
           type="submit"
-          className="flex justify-center gap-2 rounded-lg bg-stone-950 p-3 text-white"
+          className="flex justify-center gap-2 rounded-lg bg-stone-950 p-2 text-white"
         >
-          Let's get started <TbFlareFilled className="text-lime-500" />
+          Let's get started
+          <TbFlareFilled size={20} className="text-lime-500" />
         </button>
       </form>
     </>
