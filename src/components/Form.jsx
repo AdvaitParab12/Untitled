@@ -2,7 +2,10 @@ import { TbFlareFilled } from "react-icons/tb";
 import Intro from "@/components/Intro";
 import { useState } from "react";
 
+
+
 function Form() {
+  console.log(import.meta.env.VITE_NAME_FIELD)
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -32,24 +35,21 @@ function Form() {
       services: selectedServices,
     });
   };
-
-  // const handleChange = (value, property) => {
-  //   setFormData({ ...formData, [property]: value });
-  // };
-  const handleChange = (value) => {
-    formData((prevState) => {
-      return [...prevState, value];
-    });
+  const handleChange = (value, property) => {
+    setFormData({ ...formData, [property]: value });
   };
 
   return (
     <>
       <Intro />
-      <form className="flex flex-col gap-1" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-1"
+        action={import.meta.env.VITE_SUBMIT_URL}
+      >
         {/* Input */}
         <input
           type="text"
-          name="fullname"
+          name={import.meta.env.VITE_NAME_FIELD}
           id="fullname"
           placeholder="Your name"
           className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
@@ -59,7 +59,7 @@ function Form() {
         />
         <input
           type="email"
-          name="email"
+          name={import.meta.env.VITE_EMAIL_FIELD}
           id="email"
           placeholder="your@company.com"
           className="border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
@@ -69,7 +69,7 @@ function Form() {
         />
         <input
           type="text"
-          name="message"
+          name={import.meta.env.VITE_MEASSGE_FIELD}
           id="message"
           placeholder="Tell us a bit about your project..."
           className="h-24 border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
@@ -90,7 +90,8 @@ function Form() {
               >
                 <input
                   type="checkbox"
-                  name={service}
+                  name={import.meta.env.VITE_SERVICES_FEILD}
+                  value={service}
                   className="size-6"
                   onChange={(e) => handleCheckbox(service, e.target.checked)}
                 />
