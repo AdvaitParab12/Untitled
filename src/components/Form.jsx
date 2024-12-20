@@ -1,14 +1,54 @@
+import { useNavigate } from "react-router-dom";
 import { TbFlareFilled } from "react-icons/tb";
 import Intro from "@/components/Intro";
 import { useForm } from "react-hook-form";
 import utils from "@/lib/utils.js";
 
 function Form() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const handleFormSubmit = async (data) => {
+    const res = await fetch("https://vector.profanity.dev", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: data.message,
+      }),
+    })
+      const resData = await res.json();
+      console.log(resData);
+      if(resData.isProfanity){
+        return navigate("error", {
+          state:{
+            badWord: resData.flaggedFor
+          }
+        })
+      }
+    const formData = new FormData();
+    console.log(formData);
+    formData.append(utils.fullname, data.fullname);
+    formData.append(utils.email, data.email);
+    formData.append(utils.message, data.message);
+    formData.append(utils.services, data.services);
+    fetch(utils.submiturl, {
+      method: "POST",
+      mode: "no-cors",
+      body: formData,
+    }).then(() => {
+      navigate("submissions", {
+        state: {
+          name: data.fullname,
+        },
+      });
+    });
+  };
 
   const services = [
     "Website Design",
@@ -24,9 +64,7 @@ function Form() {
       <Intro />
       <form
         className="flex flex-col gap-1"
-        onSubmit={handleSubmit((data) => {
-          console.log(data);
-        })}
+        onSubmit={handleSubmit(handleFormSubmit)}
       >
         {/* Input */}
         <input
@@ -76,26 +114,26 @@ function Form() {
 
         {/* Checkbox */}
         <section className="mb-12 grid grid-cols-2 gap-1 md:max-w-96">
-          {services.map((service, idx) => {
+          {services.map((services, idx) => {
             return (
               <label
-                key={service + idx}
+                key={services + idx}
                 className="flex cursor-pointer items-center gap-1"
               >
                 <input
                   type="checkbox"
-                  {...register("service", { required: "Atleast one" })}
-                  value={service}
+                  {...register("services", { required: "Atleast one" })}
+                  value={services}
                   className="size-6"
                 />
-                
-                {service}
+
+                {services}
               </label>
             );
           })}
-          {errors.service && (
-                  <p className="text-red-500">{errors.service.message}</p>
-                )}
+          {errors.services && (
+            <p className="text-red-500">{errors.services.message}</p>
+          )}
         </section>
         <button
           type="submit"
