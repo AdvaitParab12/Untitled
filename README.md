@@ -1,8 +1,41 @@
-# React + Vite
+# untitled-ui
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 📨 Contact Form with Profanity Detection
 
-Currently, two official plugins are available:
+A modern, responsive contact form built with **React**, **React Hook Form**, and **Tailwind CSS**. It includes:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Form validation
+- Profanity detection via `vector.profanity.dev`
+- Conditional routing (error page, submission success)
+- Social/contact info sidebar
+- Reusable components
+- Clean and minimalist UI
+
+---
+
+## 🔧 Tech Stack
+
+- **React** (with `react-router-dom`)
+- **React Hook Form** for form handling & validation
+- **Tailwind CSS** for styling
+- **react-icons** for icons
+- **vector.profanity.dev** for content filtering
+
+---
+
+## Features
+✅ Email validation (with regex)
+✅ Message profanity check using external API
+✅ Checkbox for service options with minimum validation
+✅ Route-based error and success handling
+✅ Accessible, responsive design
+
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/Sneha14-Gupta/untitled-ui
+cd untitled-ui
